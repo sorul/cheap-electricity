@@ -24,7 +24,7 @@ The script determines whether the price at the current hour is cheap, average, o
 1.  **Clone the repository (if necessary):**
     ```bash
     git clone <REPOSITORY_URL>
-    cd tarifaluz
+    cd cheap_electricity
     ```
 
 2.  **Create the configuration file:**

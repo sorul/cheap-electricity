@@ -1,14 +1,14 @@
-# Makefile para el proyecto tarifaluz
+# Makefile for the cheap_electricity project
 
 .PHONY: install run
 
-# Instala las dependencias del proyecto usando Poetry
+# Install project dependencies using Poetry
 install:
-	@echo "--- Instalando dependencias... ---"
+	@echo "--- Installing dependencies... ---"
 	@poetry install
 
-# Ejecuta el script principal
-# El script se encarga de cargar las variables del .env por sí mismo
+# Run the main script
+# The script handles loading variables from the .env file itself
 run:
-	@echo "--- Ejecutando el script de precio de la luz... ---"
-	@poetry run python tarifaluz/precio_luz.py
+	@echo "--- Running the electricity price script... ---"
+	@poetry run python cheap_electricity/main.py
