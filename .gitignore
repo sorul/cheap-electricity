@@ -3,6 +3,7 @@
 
 # Poetry
 .venv/
+poetry.lock
 
 # Python cache
 __pycache__/
