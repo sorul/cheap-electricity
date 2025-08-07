@@ -4,9 +4,10 @@ from typing import Any, Dict, Optional, Tuple
 
 import pandas as pd
 
+from .price import Price, PriceCategory
 
 
-def process_and_categorize_prices(prices_data: Dict[str, Any]) -> Tuple[Optional[float], Optional[str]]:
+def process_and_categorize_prices(prices_data: Dict[str, Any]) -> Tuple[Optional[Price], Optional[Price]]:
     if not prices_data or 'indicator' not in prices_data or not prices_data['indicator'].get('values'):
         print("Invalid data format or no values.")
         return None, None
@@ -39,24 +40,26 @@ def process_and_categorize_prices(prices_data: Dict[str, Any]) -> Tuple[Optional
     green_limit = pd.Series(prices).quantile(0.33)
     red_limit = pd.Series(prices).quantile(0.66)
 
-    now = datetime.datetime.now()
-    current_price_info: Optional[Dict[str, Any]] = None
+    price_objects = []
     for price_info in hourly_prices:
         price_time = datetime.datetime.fromisoformat(price_info['datetime'])
-        if price_time.hour == now.hour:
-            current_price_info = price_info
-            break
+        value = price_info['value']
+        if value <= green_limit:
+            cat = PriceCategory.GREEN
+        elif value >= red_limit:
+            cat = PriceCategory.RED
+        else:
+            cat = PriceCategory.YELLOW
+        price_objects.append(Price(hour=price_time, value=value, unit="€/MWh", category=cat))
 
-    if not current_price_info:
-        print(f"Price not found for the current hour ({now.hour}:00).")
+    now = datetime.datetime.now()
+    current_hour = now.hour
+    previous_hour = (current_hour - 1) % 24
+    current_price = next((p for p in price_objects if p.hour.hour == current_hour), None)
+    previous_price = next((p for p in price_objects if p.hour.hour == previous_hour), None)
+
+    if not current_price or not previous_price:
+        print(f"Price not found for the current or previous hour ({current_hour}:00).")
         return None, None
 
-    current_price = current_price_info['value']
-    if current_price <= green_limit:
-        category = "Green"
-    elif current_price >= red_limit:
-        category = "Red"
-    else:
-        category = "Yellow"
-
-    return current_price, category
+    return current_price, previous_price

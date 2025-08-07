@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 from tests.mock_data import MOCK_PRICES_DATA
 from cheap_electricity.price_processing import process_and_categorize_prices
+from cheap_electricity.price import PriceCategory
 
 
 class FixedDateTimeGreen(datetime.datetime):
@@ -25,20 +26,26 @@ class FixedDateTimeRed(datetime.datetime):
 
 def test_process_and_categorize_prices_green():
     with patch("cheap_electricity.price_processing.datetime.datetime", FixedDateTimeGreen):
-        price, category = process_and_categorize_prices(MOCK_PRICES_DATA)
-    assert price == 90.0
-    assert category == "Green"
+        current, previous = process_and_categorize_prices(MOCK_PRICES_DATA)
+    assert current.value == 90.0
+    assert current.category is PriceCategory.GREEN
+    assert previous.value == 100.0
+    assert previous.category is PriceCategory.YELLOW
 
 
 def test_process_and_categorize_prices_yellow():
     with patch("cheap_electricity.price_processing.datetime.datetime", FixedDateTimeYellow):
-        price, category = process_and_categorize_prices(MOCK_PRICES_DATA)
-    assert price == 100.0
-    assert category == "Yellow"
+        current, previous = process_and_categorize_prices(MOCK_PRICES_DATA)
+    assert current.value == 100.0
+    assert current.category is PriceCategory.YELLOW
+    assert previous.value == 250.0
+    assert previous.category is PriceCategory.RED
 
 
 def test_process_and_categorize_prices_red():
     with patch("cheap_electricity.price_processing.datetime.datetime", FixedDateTimeRed):
-        price, category = process_and_categorize_prices(MOCK_PRICES_DATA)
-    assert price == 230.0
-    assert category == "Red"
+        current, previous = process_and_categorize_prices(MOCK_PRICES_DATA)
+    assert current.value == 230.0
+    assert current.category is PriceCategory.RED
+    assert previous.value == 75.0
+    assert previous.category is PriceCategory.GREEN
