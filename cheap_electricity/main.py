@@ -3,7 +3,7 @@ import asyncio
 from cheap_electricity.esios import get_prices_for_today
 from cheap_electricity.price_processing import process_and_categorize_prices
 from cheap_electricity.notifications import send_telegram_notification
-from cheap_electricity.price import PriceCategory
+from cheap_electricity.price import ColorEnum
 
 
 async def main() -> None:
@@ -16,19 +16,19 @@ async def main() -> None:
         return
 
     color_map = {
-        PriceCategory.GREEN: "\033[92m",
-        PriceCategory.YELLOW: "\033[93m",
-        PriceCategory.RED: "\033[91m",
+        ColorEnum.GREEN: "\033[92m",
+        ColorEnum.YELLOW: "\033[93m",
+        ColorEnum.RED: "\033[91m",
     }
     color_end = "\033[0m"
     category = current_price.category
     print(
         f"The current price is {current_price.value} {current_price.unit}. "
-        f"Category: {color_map.get(category, '')}{category.value}{color_end}"
+        f"Category: {color_map.get(category.color, '')}{category.color.value}{color_end}"
     )
 
-    prev_green = previous_price.category is PriceCategory.GREEN
-    curr_green = current_price.category is PriceCategory.GREEN
+    prev_green = previous_price.category.color is ColorEnum.GREEN
+    curr_green = current_price.category.color is ColorEnum.GREEN
     if prev_green != curr_green:
         await send_telegram_notification(current_price, previous_price)
 
