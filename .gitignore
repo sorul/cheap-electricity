@@ -1,0 +1,9 @@
+# Secrets
+.env
+
+# Poetry
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
