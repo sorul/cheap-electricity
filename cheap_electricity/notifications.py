@@ -1,7 +1,7 @@
 from telegram import Bot
 
-from . import config
-from .price import Price, ColorEnum
+from cheap_electricity import config
+from cheap_electricity.price import Price, ColorEnum
 
 
 async def send_telegram_notification(current: Price, previous: Price) -> None:
@@ -13,14 +13,14 @@ async def send_telegram_notification(current: Price, previous: Price) -> None:
     if current.category.color is ColorEnum.GREEN:
         message = (
             f"Time for cheap power! {current.category.emoji}\n"
-            f"Price changed from {previous.value} {previous.unit} ({previous.category.color.value}) "
+            f"Price changed from {previous.value} {previous.unit} ({previous.category.emoji}) "
             f"to {current.value} {current.unit} ({current.category.color.value})."
         )
     else:
         message = (
             "Cheap power period ended.\n"
-            f"Price changed from {previous.value} {previous.unit} ({previous.category.color.value}) "
-            f"to {current.value} {current.unit} ({current.category.color.value})."
+            f"Price changed from {previous.value} {previous.unit} ({previous.category.emoji}) "
+            f"to {current.value} {current.unit} ({current.category.emoji})."
         )
 
     try:

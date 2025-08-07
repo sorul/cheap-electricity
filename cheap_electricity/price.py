@@ -15,12 +15,6 @@ class PriceCategory:
     emoji: str
 
 
-# Predefined categories
-PriceCategory.GREEN = PriceCategory(ColorEnum.GREEN, "\U0001F7E2")
-PriceCategory.YELLOW = PriceCategory(ColorEnum.YELLOW, "\U0001F7E1")
-PriceCategory.RED = PriceCategory(ColorEnum.RED, "\U0001F534")
-
-
 @dataclass
 class Price:
     hour: datetime

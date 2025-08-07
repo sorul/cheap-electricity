@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional, Tuple
 
 import pandas as pd
 
-from .price import Price, PriceCategory
+from cheap_electricity.price import Price, PriceCategory, ColorEnum
 
 
 def process_and_categorize_prices(prices_data: Dict[str, Any]) -> Tuple[Optional[Price], Optional[Price]]:
@@ -45,11 +45,11 @@ def process_and_categorize_prices(prices_data: Dict[str, Any]) -> Tuple[Optional
         price_time = datetime.datetime.fromisoformat(price_info['datetime'])
         value = price_info['value']
         if value <= green_limit:
-            cat = PriceCategory.GREEN
+            cat = PriceCategory(ColorEnum.GREEN, '🟢')
         elif value >= red_limit:
-            cat = PriceCategory.RED
+            cat = PriceCategory(ColorEnum.RED, '🔴')
         else:
-            cat = PriceCategory.YELLOW
+            cat = PriceCategory(ColorEnum.YELLOW, '🟡')
         price_objects.append(Price(hour=price_time, value=value, unit="€/MWh", category=cat))
 
     now = datetime.datetime.now()

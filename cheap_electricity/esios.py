@@ -3,7 +3,7 @@ from typing import Any, Dict, Optional
 
 import requests
 
-from . import config
+from cheap_electricity import config
 
 
 def get_prices_for_today() -> Optional[Dict[str, Any]]:
