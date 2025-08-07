@@ -1,15 +1,27 @@
 from telegram import Bot
 
 from . import config
+from .price import Price, PriceCategory
 
 
-async def send_telegram_notification(price: float) -> None:
+async def send_telegram_notification(current: Price, previous: Price) -> None:
     if not config.TELEGRAM_BOT_TOKEN or not config.TELEGRAM_CHAT_ID:
         print("Error: Telegram environment variables not set in .env")
         return
 
     bot = Bot(token=config.TELEGRAM_BOT_TOKEN)
-    message = f"Time for cheap power! 🟢\nThe current price is {price} €/MWh."
+    if current.category is PriceCategory.GREEN:
+        message = (
+            "Time for cheap power! 🟢\n"
+            f"Price changed from {previous.value} {previous.unit} ({previous.category.value}) "
+            f"to {current.value} {current.unit} ({current.category.value})."
+        )
+    else:
+        message = (
+            "Cheap power period ended.\n"
+            f"Price changed from {previous.value} {previous.unit} ({previous.category.value}) "
+            f"to {current.value} {current.unit} ({current.category.value})."
+        )
 
     try:
         await bot.send_message(chat_id=config.TELEGRAM_CHAT_ID, text=message)
