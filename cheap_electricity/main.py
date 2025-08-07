@@ -1,8 +1,8 @@
 import asyncio
 
-from .esios import get_prices_for_today
-from .price_processing import process_and_categorize_prices
-from .notifications import send_telegram_notification
+from cheap_electricity.esios import get_prices_for_today
+from cheap_electricity.price_processing import process_and_categorize_prices
+from cheap_electricity.notifications import send_telegram_notification
 
 
 async def main() -> None:
