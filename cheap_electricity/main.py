@@ -1,22 +1,24 @@
-import requests
+import asyncio
 import datetime
 import os
-import asyncio
+from typing import Any, Dict, Optional, Tuple
+
 import pandas as pd
-from telegram import Bot
+import requests
 from dotenv import load_dotenv
+from telegram import Bot
 
 # Load environment variables from .env file
 load_dotenv()
 
 # --- Environment Variables ---
-ESIOS_API_TOKEN = os.getenv("ESIOS_API_TOKEN")
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+ESIOS_API_TOKEN: Optional[str] = os.getenv("ESIOS_API_TOKEN")
+TELEGRAM_BOT_TOKEN: Optional[str] = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID: Optional[str] = os.getenv("TELEGRAM_CHAT_ID")
 
 
 # --- ESIOS API Functions ---
-def get_prices_for_today():
+def get_prices_for_today() -> Optional[Dict[str, Any]]:
   """Fetches the PVPC electricity prices for the current day from the esios API."""
   if not ESIOS_API_TOKEN:
     print("Error: ESIOS_API_TOKEN not configured in .env file.")
@@ -42,7 +44,7 @@ def get_prices_for_today():
     return None
 
 
-def get_mock_prices():
+def get_mock_prices() -> Dict[str, Any]:
   """Returns a mock JSON response simulating the esios API for development."""
   print("--- USING MOCK DATA ---")
   today_str = datetime.date.today().strftime('%Y-%m-%d')
@@ -68,7 +70,7 @@ def get_mock_prices():
 
 
 # --- Price Processing Functions ---
-def process_and_categorize_prices(prices_data):
+def process_and_categorize_prices(prices_data: Dict[str, Any]) -> Tuple[Optional[float], Optional[str]]:
   if not prices_data or 'indicator' not in prices_data or not prices_data[
       'indicator'].get('values'):
     print("Invalid data format or no values.")
@@ -101,7 +103,7 @@ def process_and_categorize_prices(prices_data):
   red_limit = pd.Series(prices).quantile(0.66)
 
   now = datetime.datetime.now()
-  current_price_info = None
+  current_price_info: Optional[Dict[str, Any]] = None
   for price_info in hourly_prices:
     price_time = datetime.datetime.fromisoformat(price_info['datetime'])
     if price_time.hour == now.hour:
@@ -124,7 +126,7 @@ def process_and_categorize_prices(prices_data):
 
 
 # --- Telegram Notification Function ---
-async def send_telegram_notification(price):
+async def send_telegram_notification(price: float) -> None:
   if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
     print("Error: Telegram environment variables not set in .env")
     return
@@ -140,7 +142,7 @@ async def send_telegram_notification(price):
 
 
 # --- Main Execution ---
-async def main():
+async def main() -> None:
   # TODO: When the esios API token is active, change to True.
   USE_REAL_DATA = True
 
