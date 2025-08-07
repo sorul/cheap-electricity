@@ -17,7 +17,7 @@ def test_main_triggers_notification(monkeypatch):
     async_mock = AsyncMock()
     monkeypatch.setattr("cheap_electricity.main.send_telegram_notification", async_mock)
 
-    with patch("cheap_electricity.main.datetime.datetime", FixedDateTime):
+    with patch("cheap_electricity.price_processing.datetime.datetime", FixedDateTime):
         asyncio.run(main())
 
     async_mock.assert_awaited_once_with(90.0)
