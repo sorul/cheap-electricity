@@ -31,7 +31,7 @@ The script determines whether the price at the current hour is cheap, average, o
     Create a file named `.env` in the project root. You can use the following example as a template:
 
     ```ini
-    # ESIOS API Token from Red Eléctrica
+    # ESIOS API Token from Red Eléctrica de España
     ESIOS_API_TOKEN="YOUR_ESIOS_TOKEN"
 
     # Telegram Bot Token

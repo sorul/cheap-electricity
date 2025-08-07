@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from cheap_electricity.main import get_prices_for_today
+from cheap_electricity.esios import get_prices_for_today
 
 
 def test_get_prices_for_today_uses_requests(monkeypatch):
@@ -9,8 +9,8 @@ def test_get_prices_for_today_uses_requests(monkeypatch):
     fake_response.raise_for_status.return_value = None
     mock_get = Mock(return_value=fake_response)
 
-    monkeypatch.setattr("cheap_electricity.main.requests.get", mock_get)
-    monkeypatch.setattr("cheap_electricity.main.ESIOS_API_TOKEN", "TOKEN")
+    monkeypatch.setattr("cheap_electricity.esios.requests.get", mock_get)
+    monkeypatch.setattr("cheap_electricity.config.ESIOS_API_TOKEN", "TOKEN")
 
     data = get_prices_for_today()
 
