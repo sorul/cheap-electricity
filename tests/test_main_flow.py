@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock, patch
 
 from tests.mock_data import MOCK_PRICES_DATA
 from cheap_electricity.main import main
-from cheap_electricity.price import PriceCategory
+from cheap_electricity.price import ColorEnum
 
 
 class FixedDateTime(datetime.datetime):
@@ -30,9 +30,9 @@ def test_main_triggers_notification(monkeypatch):
     async_mock.assert_awaited_once()
     current, previous = async_mock.call_args[0]
     assert current.value == 90.0
-    assert current.category is PriceCategory.GREEN
+    assert current.category.color is ColorEnum.GREEN
     assert previous.value == 100.0
-    assert previous.category is PriceCategory.YELLOW
+    assert previous.category.color is ColorEnum.YELLOW
 
 
 def test_main_triggers_notification_on_exit(monkeypatch):
@@ -46,6 +46,6 @@ def test_main_triggers_notification_on_exit(monkeypatch):
     async_mock.assert_awaited_once()
     current, previous = async_mock.call_args[0]
     assert current.value == 150.0
-    assert current.category is PriceCategory.YELLOW
+    assert current.category.color is ColorEnum.YELLOW
     assert previous.value == 90.0
-    assert previous.category is PriceCategory.GREEN
+    assert previous.category.color is ColorEnum.GREEN
