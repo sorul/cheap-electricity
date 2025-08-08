@@ -44,6 +44,6 @@ Asegúrate de que el archivo `.env` en la raíz del proyecto contenga las siguie
 ## Directrices de Desarrollo:
 
 -   **Idioma:** Todo el código, comentarios, nombres de variables y documentación deben estar en inglés.
--   **Estilo de Código:** Sigue las convenciones de estilo PEP 8 para Python. Pon el tipo de todas las funciones y parametros de entrada.
+-   **Estilo de Código:** Identacion usando 2 espacios. Sigue las convenciones de estilo PEP 8 para Python. Pon el tipo de todas las funciones y parametros de entrada.
 -   **Documentación:** Utiliza docstrings para documentar funciones y clases. Aseg
 -   **Pruebas:** Asegúrate de que todas las nuevas funcionalidades estén cubiertas por pruebas unitarias.

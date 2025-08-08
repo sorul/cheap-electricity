@@ -36,8 +36,7 @@ def test_send_telegram_notification_green(monkeypatch):
 
   async_mock.assert_awaited_once_with(
       chat_id="CHAT",
-      text=("Time for cheap power! 🟢\n"
-            "Price changed from 100.0 €/MWh (Yellow) to 90.0 €/MWh (Green)."),
+      text=("Time for cheap power! 🟢\n"            "Price changed from 100.0 €/MWh (Yellow) to 90.0 €/MWh (Green)."),
   )
 
 
@@ -64,6 +63,5 @@ def test_send_telegram_notification_non_green(monkeypatch):
 
   async_mock.assert_awaited_once_with(
       chat_id="CHAT",
-      text=("Cheap power period ended.\n"
-            "Price changed from 123.45 €/MWh (Green) to 50.0 €/MWh (Red)."),
+      text=("Cheap power period ended.\n"            "Price changed from 123.45 €/MWh (Green) to 50.0 €/MWh (Red)."),
   )

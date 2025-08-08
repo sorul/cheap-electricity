@@ -11,6 +11,7 @@ def test_get_prices_for_today_uses_requests(monkeypatch):
 
     monkeypatch.setattr("cheap_electricity.esios.requests.get", mock_get)
     monkeypatch.setattr("cheap_electricity.config.ESIOS_API_TOKEN", "TOKEN")
+    monkeypatch.setattr("os.path.exists", lambda x: False)
 
     data = get_prices_for_today()
 

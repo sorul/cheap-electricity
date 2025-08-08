@@ -15,6 +15,7 @@ class PriceCategory:
     emoji: str
 
 
+
 @dataclass
 class Price:
     hour: datetime
